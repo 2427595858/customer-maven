@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--配置springmvc-->
+    <!--1、配置注解驱动
+         可以简化配置：
+         a. 直接使用mvc:annotation-driven相当于配置了注解映射器和适配器
+         b. 提供一系列功能：数据绑定，数据和日期的format @NumberFormat,@DateTimeFormat
+         c. xml,json的默认读写  -->
+    <mvc:annotation-driven conversion-service="conversionService">
+        <!--这里的conversionService是转换器的配置，在下面会进行具体配置-->
+    </mvc:annotation-driven>
+
+    <!--2、配置静态资源处理方式
+            当我们使用Restful风格时，所有请求都会经过前端控制器Dispatcher处理解析，
+            但是，静态资源并不需要被处理解析，因此，需要单独配置   -->
+    <!--webapp/resources目录下为静态文件，配置该文件夹下所有文件均不被解析-->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+    <!--3、配置视图显示ViewResolver，以及jsp页面的相关设置-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--配置jstl标签以及jsp页面的前缀和后缀配置-->
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--4、配置扫描controller包-->
+    <context:component-scan base-package="com.silver.controller"/>
+
+    <!--5、配置转换器-->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <!-- 这里可以配置多个转换器 -->
+                <!-- 去除字符串两边空格的转换器 -->
+                <bean class="com.silver.controller.converter.TrimStringConverter"/>
+            </list>
+        </property>
+    </bean>
+</beans>

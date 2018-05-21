@@ -1,0 +1,44 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0"
+         metadata-complete="true">
+    <!-- 将servletschema定义换为3.0 -->
+    <!-- 配置前端控制器 -->
+    <servlet>
+          <servlet-name>customer-dispatcher</servlet-name>
+          <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+          <!-- 配置springmvc要加载的配置文件
+                  spring包下的spring-*.xml文件
+                  实现mybatis，spring和springMVC的整合 -->
+          <init-param>
+              <param-name>contextConfigLocation</param-name>
+              <param-value>classpath:spring/spring-*.xml</param-value>
+          </init-param>
+    </servlet>
+
+    <!-- 进行映射 -->
+    <servlet-mapping>
+          <servlet-name>customer-dispatcher</servlet-name>
+          <!-- 设置“/”表示拦截所有请求，Restful风格 -->
+          <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!-- 表单通过post方式提交，可能会出现乱码问题，需要设置过滤器解决 -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!-- 设置过滤器中的属性，将编码格式统一为utf-8 -->
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <!-- 这里的/* 表示过滤所有请求 -->
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+</web-app>
