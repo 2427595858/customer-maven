@@ -7,6 +7,8 @@
 - 项目管理工具：maven
 - 编译器：intellij idea
 
+注：此项目是基于之前的[Servlet+JSP+SQL Server+Layui+intellij idea编写的客户信息管理系统](https://github.com/2427595858/Customer-Information-Management)项目进行改造。
+
 ## 实现功能
 - 客户信息的增删查改，以及模糊查询功能
 - 分页显示客户信息
